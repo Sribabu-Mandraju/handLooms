@@ -1,8 +1,11 @@
 import React from 'react'
+import Footer from '../components/footer'
 
 const Home = () => {
   return (
-    <div className='text-red-900 text-3xl'>Home</div>
+    <>
+      <Footer />
+    </>
   )
 }
 export default Home
