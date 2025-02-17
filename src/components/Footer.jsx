@@ -26,10 +26,10 @@ const Footer = () => {
                 </div>
                 <div className='w-1/3 mx-4'>
                     <div className='text-[#222222] text-lg font-bold mb-2'>Address</div>
-                    <div className='text-[#767676] text-[14px] pr-4'>
+                    <div className='text-[#767676] text-sm pr-4'>
                         The Andhra Pradesh State Handloom Weavers’ Cooperative Society Limited. APCO Bhavan, 29-11-9/1, Venkateswara Rao Road, Near Rahman Park, Governorpet, VIJAYAWADA-520002
                     </div>
-                    <div className='mt-5 text-[#767676] text-[14px]'>
+                    <div className='mt-5 text-[#767676] text-sm'>
                         <div >
                             Mon to Sat – 9 am till 6 pm
                         </div>
@@ -37,34 +37,25 @@ const Footer = () => {
                             9502774125
                         </div>
                     </div>
-                    <div className='flex flex-row space-x-4 mt-5'>
-                        <FaFacebookF />
-                        <FaXTwitter />
-                        <FaInstagram />
-                        <FaYoutube />
+                    <div className='flex flex-row space-x-4 mt-5 text-gray-600 text-xl'>
+                        <a href="#" className="hover:text-blue-600 transition"><FaFacebookF /></a>
+                        <a href="#" className="hover:text-black transition"><FaXTwitter /></a>
+                        <a href="#" className="hover:text-pink-500 transition"><FaInstagram /></a>
+                        <a href="#" className="hover:text-red-600 transition"><FaYoutube /></a>
                     </div>
                 </div>
                 <div className='w-1/3'>
                     <div className='text-[#222222] text-lg font-bold mb-2'>HELP</div>
-                    <div className='flex flex-col text-[#222222] text-[14px] mt-2' >
-                        <ul>
-                            <li className='mb-3'>
-                                <a href='#'>About Us</a>
+                    <ul className='text-[#222222] text-[14px] mt-2 space-y-3'>
+                        {["About Us", "Order Tracking", "Store Locator", "Blogs", "Contact Us"].map((item, index) => (
+                            <li key={index} className='relative group'>
+                                <a href="#" className='relative inline-block transition duration-300 text-gray-700 group-hover:text-[#222222]'>
+                                    {item}
+                                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#222222] transition-all duration-300 group-hover:w-full"></span>
+                                </a>
                             </li>
-                            <li className='mb-3'>
-                                <a href="">Order Tracking</a>
-                            </li>
-                            <li className='mb-3'>
-                                <a href="">Store Locator</a>
-                            </li>
-                            <li className='mb-3'>
-                                <a href="">Blogs</a>
-                            </li>
-                            <li className='mb-3'>
-                                <a href="">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
+                        ))}
+                    </ul>
                 </div>
             </div>
             <hr className='border-t-1 border-gray-300 mt-10 mb-8' />
