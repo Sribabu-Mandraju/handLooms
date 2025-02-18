@@ -15,20 +15,34 @@ const About = () => {
           <div className="lg:col-span-2 shadow-lg h-72">
             <AboutCarousel2 />
           </div>
-          <div className="shadow-lg">
-            <img
-              src={AboutImage1}
-              alt="Handloom Saree"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="shadow-lg">
-            <img
-              src={AboutImage2}
-              alt="Apco Handlooms"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <div className="relative shadow-lg w-full overflow-hidden group">
+  <img
+    src={AboutImage1}
+    alt="Handloom Saree"
+    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+  />
+
+  <div className="hidden absolute inset-0 group-hover:flex flex-col px-[30px] justify-center text-white  bg-black/40">
+    <span className='text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-bold'>Making</span>
+    <span className='text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-bold'>Handloom</span>
+    <span className='text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-bold'>Saree</span>
+    <span className='underline py-[20px]'>Know More</span>
+  </div>
+</div>
+<div className="relative shadow-lg w-full overflow-hidden group">
+  <img
+    src={AboutImage2}
+    alt="About Apco"
+    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+  />
+
+  <div className="hidden absolute inset-0 group-hover:flex flex-col px-[30px] justify-end pb-[40px] text-white  bg-black/40">
+    <span className='text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-bold'>About Apco</span>
+    <span className='underline '>Read More</span>
+  </div>
+</div>
+
+         
         </div>
       </div>
     </div>
