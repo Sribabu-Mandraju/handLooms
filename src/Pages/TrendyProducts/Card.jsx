@@ -4,9 +4,9 @@ const Card = (props) => {
   const [currentImage, setCurrentImage] = useState(props.image1);
 
   return (
-    <div className=" h-[400px] w-[250px] rounded-lg shadow-lg bg-white overflow-hidden border-1 border-gray-400 p-[15px]">
-      <div>
-        
+    <div className=" h-[400px]  w-[250px] rounded-lg shadow-lg bg-white overflow-hidden border-1 border-gray-400 p-[15px]">
+      <div className='relative'>
+        <div className='h-[30px] w-[40px] bg-[brown] absolute text-white flex justify-center items-center'>{props.discount}</div>
       <img 
         className="w-full h-[290px] animate-fade"  onMouseEnter={() => {setTimeout(()=>setCurrentImage(props.image2 || props.image1),150)}}
         onMouseLeave={() => {setTimeout(()=>setCurrentImage(props.image1),150)}}
