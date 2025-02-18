@@ -1,1 +1,11 @@
 @import "tailwindcss";
+::-webkit-scrollbar {
+    display: none;
+  }
+    body {
+    overflow: auto;
+  }
+  .swiper-button-prev:after, .swiper-button-next:after {
+      color: gray;
+      font-size: 20px;
+}
