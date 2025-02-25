@@ -153,7 +153,7 @@ const Navbar = () => {
       {/* Invisible hover bridge */}
       <div className="absolute w-full h-[20px] -bottom-[20px]" />
       
-      <div className="absolute left-1/2 transform -translate-x-[80px] top-full bg-white border shadow-lg lg:w-[800px] rounded-lg p-4 z-50 flex transition-all duration-300 ease-in-out mt-[20px]">
+      <div className="absolute left-1/2 transform -translate-x-[80px] top-full bg-white border shadow-lg lg:w-[800px] rounded-lg p-4 z-50 flex transition-all duration-300 ease-in-out mt-[12px]">
         {sareesCategories.map((category, index) => (
           <div key={index} className="w-1/4 p-2 hover:bg-gray-50 transition-colors">
             <img 
@@ -184,19 +184,16 @@ const Navbar = () => {
   onMouseEnter={() => setIsApparelsOpen(true)}
   onMouseLeave={() => setIsApparelsOpen(false)}
 >
-  {/* Main Dropdown Button */}
   <div className="flex items-center gap-1 hover:text-red-600 transition-colors">
     <span>Apparels</span>
     <FaSortDown className="px-1" />
   </div>
 
-  {/* Dropdown Content */}
   {isApparelsOpen && (
     <>
-      {/* Invisible hover bridge */}
       <div className="absolute w-full h-[20px] -bottom-[20px]" />
       
-      <div className="absolute left-1/2 transform -translate-x-[80px] top-full bg-white border shadow-lg lg:w-[700px] rounded-lg p-4 z-50 flex transition-all justify-center gap-[30px] duration-300 ease-in-out mt-[20px]">
+      <div className="absolute left-1/2 transform -translate-x-[80px] top-full bg-white border shadow-lg lg:w-[700px] rounded-lg p-4 z-50 flex transition-all justify-center gap-[30px] duration-300 ease-in-out mt-[12px]">
         {apparelsdrop.map((item, index) => (
           <div key={index} className="w-1/4 p-2 hover:bg-gray-50 transition-colors flex items-around flex-col justify-center">
             <img 
