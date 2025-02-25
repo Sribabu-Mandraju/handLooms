@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {FaBars, FaTimes } from "react-icons/fa";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import { FaSortDown } from "react-icons/fa";
-import logo from "../assets/apco-logo.jpg"; // Ensure correct path
+import logo from "../assets/logo1.png"; // Ensure correct path
 import cottonsaree from "../assets/cotton-saree-1.jpg"
 import silksaree from "../assets/Silk-Saree1.jpg"
 import { IoSearchOutline } from "react-icons/io5";
@@ -45,6 +45,7 @@ const sareesdrop = [
 const Navbar = () => {
   const [isSareesOpen, setIsSareesOpen] = useState(false);
   const [isApparelsOpen, setIsApparelsOpen] = useState(false);
+  const [sideNavOpen, setSideNavOpen] = useState(false);
   const sareesCategories = [
     {
       type: "COTTON SAREES",
@@ -98,23 +99,23 @@ const Navbar = () => {
   return (
   
     <nav className="bg-white shadow-md">
-      <div className="bg-red-900 h-[25px] w-full">
+      <div className="bg-red-900 h-[25px] w-full hidden md:block">
             <h3 className="text-white font-semibold md:mx-[70px]">Contact Centre: 086 111 8888</h3>
       </div>
     <div className="max-w-7xl mx-auto px-4 h-[70px]">
       <div className="flex justify-between items-center h-16">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <img src={logo} alt="Logo" className="h-[60px]" />
+          <img src={logo} alt="Logo" className="h-[70px]" />
         </div>
-        <div className="w-2/4 flex gap-[30px]">
-        <div className="search rounded-full w-full border-[2px] border-[#cccccc] flex p-2 items-center gap-3">
+        <div className="w-2/4 flex md:gap-[30px]">
+        <div className="hidden search rounded-full w-full border-[2px] border-[#cccccc] md:flex p-1 items-center gap-3">
         <IoSearchOutline className="text-[25px] text-[#ccc]"/>
 
-          <input type="text" className="p-1 w-2/3 outline-none" placeholder="Search products, stores or brands"/>
+          <input type="text" className=" w-2/3 outline-none" placeholder="Search products, stores or brands"/>
         </div>
       
-        <div className="flex items-center space-x-4 text-gray-500 text-[25px]">
+        <div className="flex items-center mx-[10px] gap-2 lg:space-x-4 text-gray-500 text-[25px]">
           <button className="hover:text-red-600 transition-colors">
           <IoIosHeartEmpty/>         
            </button>
@@ -124,6 +125,13 @@ const Navbar = () => {
           <button className="hover:text-red-600 transition-colors">
           <MdOutlineShoppingBag/>
           </button>
+          <button
+    className="text-gray-500 text-2xl md:hidden" // Hidden on medium and larger screens
+    onClick={() => setSideNavOpen(true)}
+  >
+    <FaBars />
+  </button>
+
         </div>
         </div>
       </div>   
@@ -220,6 +228,37 @@ const Navbar = () => {
         </ul>
         </div>
     </div>
+    {/* Side Navbar */}
+    <div
+        className={`fixed top-0 left-0 w-[250px] h-full overflow-y-auto bg-white shadow-lg lg:hidden transform ${
+          sideNavOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 p-4 z-50`}
+      >
+        <div className="flex justify-between">
+        <FaTimes className="text-2xl cursor-pointer mb-4 text-red-600" onClick={() => setSideNavOpen(false)} />
+        <img src={logo} alt="Apco Logo" className="h-[50px]" />
+        <MdOutlineShoppingBag className="text-2xl cursor-pointer" />
+        
+        </div>
+        <ul className="space-y-4 font-semibold py-[20px]">
+          <li className="cursor-pointer ">Home</li>
+          <li className="cursor-pointer">Sarees</li>
+          <li className="cursor-pointer">Apparels</li>
+          <li className="cursor-pointer">Men's Wear</li>
+          <li className="cursor-pointer">Home & Decor</li>
+          <li className="cursor-pointer">Stores</li>
+        
+        </ul>
+        <ul className="space-y-4 font-semibold border-t-[1px] border-gray-400 py-[20px]">
+        <li className="cursor-pointer">My Account</li>
+          <li className="cursor-pointer">About Us</li>
+          <li className="cursor-pointer">Careers & Notifications</li>
+          <li className="cursor-pointer">Order Tracking</li>
+          <li className="cursor-pointer">Return Policy</li>
+          <li className="cursor-pointer">Store Locator</li>
+          <li className="cursor-pointer">Blogs</li>
+          </ul>
+      </div>
   </nav>
   );
 };
