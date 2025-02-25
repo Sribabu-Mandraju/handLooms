@@ -4,7 +4,8 @@ import Carousel from '../components/Hero'
 import About from './About/About'
 import TrendyProducts from './TrendyProducts/TrendyProducts'
 import LimitedEdition from './LimitedEdition/LimitedEdition'
-import Footer from '../components/footer'
+import Footer from '../components/Footer'
+
 import Stats from '../components/Stats'
 import Discover from '../components/Discover'
 const Home = () => {
