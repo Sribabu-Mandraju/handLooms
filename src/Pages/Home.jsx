@@ -21,8 +21,8 @@ const Home = () => {
      
             <TrendyProducts/>
             <LimitedEdition/>
-            <Discover />
-      <Stats />
+            {/* <Discover /> */}
+      {/* <Stats /> */}
       <Footer />
     </div>
   )
