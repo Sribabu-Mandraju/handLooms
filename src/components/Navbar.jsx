@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import bedsheets from "../assets/BedSheets-1.jpg";
 import towels from "../assets/Towels.jpg";
 import { motion } from "framer-motion";
+import SideNav from "../components/Sidenav";
 const apparelsdrop = [
   {
     image: Blouse,
@@ -407,38 +408,7 @@ const Navbar = () => {
        </ul>
      </div>
    </div>
-   {/* Side Navbar */}
-   <div
-     className={`fixed top-0 left-0 w-[250px] h-full overflow-y-auto bg-white shadow-lg lg:hidden transform ${
-       sideNavOpen ? "translate-x-0" : "-translate-x-full"
-     } transition-transform duration-300 p-4 z-50`}
-   >
-     <div className="flex justify-between items-center">
-       <FaTimes
-         className="text-2xl cursor-pointer  text-red-600"
-         onClick={() => setSideNavOpen(false)}
-       />
-       <img src={logo} alt="Apco Logo" className="h-[50px]" />
-       <MdOutlineShoppingBag className="text-2xl cursor-pointer" />
-     </div>
-     <ul className="space-y-4 font-semibold py-[20px]">
-       <li className="cursor-pointer ">Home</li>
-       <li className="cursor-pointer">Sarees</li>
-       <li className="cursor-pointer">Apparels</li>
-       <li className="cursor-pointer">Men's Wear</li>
-       <li className="cursor-pointer">Home & Decor</li>
-       <li className="cursor-pointer">Stores</li>
-     </ul>
-     <ul className="space-y-4 font-semibold border-t-[1px] border-gray-400 py-[20px]">
-       <li className="cursor-pointer">My Account</li>
-       <li className="cursor-pointer">About Us</li>
-       <li className="cursor-pointer">Careers & Notifications</li>
-       <li className="cursor-pointer">Order Tracking</li>
-       <li className="cursor-pointer">Return Policy</li>
-       <li className="cursor-pointer">Store Locator</li>
-       <li className="cursor-pointer">Blogs</li>
-     </ul>
-   </div>
+  
    </motion.nav> 
    <motion.nav
   initial={{ opacity: 0, y: -20 }}
@@ -675,38 +645,7 @@ const Navbar = () => {
 
 
       </div>
-      {/* Side Navbar */}
-      <div
-        className={`fixed top-0 left-0 w-[250px] h-full overflow-y-auto bg-white shadow-lg lg:hidden transform ${
-          sideNavOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 p-4 z-50`}
-      >
-        <div className="flex justify-between items-center">
-          <FaTimes
-            className="text-2xl cursor-pointer  text-red-600"
-            onClick={() => setSideNavOpen(false)}
-          />
-          <img src={logo} alt="Apco Logo" className="h-[50px]" />
-          <MdOutlineShoppingBag className="text-2xl cursor-pointer" />
-        </div>
-        <ul className="space-y-4 font-semibold py-[20px]">
-          <li className="cursor-pointer ">Home</li>
-          <li className="cursor-pointer">Sarees</li>
-          <li className="cursor-pointer">Apparels</li>
-          <li className="cursor-pointer">Men's Wear</li>
-          <li className="cursor-pointer">Home & Decor</li>
-          <li className="cursor-pointer">Stores</li>
-        </ul>
-        <ul className="space-y-4 font-semibold border-t-[1px] border-gray-400 py-[20px]">
-          <li className="cursor-pointer">My Account</li>
-          <li className="cursor-pointer">About Us</li>
-          <li className="cursor-pointer">Careers & Notifications</li>
-          <li className="cursor-pointer">Order Tracking</li>
-          <li className="cursor-pointer">Return Policy</li>
-          <li className="cursor-pointer">Store Locator</li>
-          <li className="cursor-pointer">Blogs</li>
-        </ul>
-      </div>
+    <SideNav sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} logo={logo}/>
     </motion.nav>
     
 
