@@ -35,7 +35,8 @@ const ProductListing = () => {
             return acc;
           }, {});
 
-          const subcategoryList = [...new Set(Object.keys(groupedProducts))];
+          const subcategoryList = Object.keys(groupedProducts);
+          
           console.log('Subcategories:', subcategoryList);
           setSubcategories(subcategoryList);
           setProducts(groupedProducts);
@@ -76,14 +77,14 @@ const ProductListing = () => {
 
   return (
     <div className="flex">
-      <div className="w-1/4 p-6  shadow-lg m-[20px] border-[2px] border-gray-300 rounded-lg">
-        <h2 className="text-2xl font-bold mb-6">Subcategories</h2>
+      <div className="w-1/4 p-6  shadow-lg m-[20px] border-[1px] border-gray-300 rounded-lg">
+        <h2 className="text-2xl font-semibold mb-6 shadow-lg px-2 py-2 rounded-lg">Subcategories</h2>
         <ul>
           {subcategories.map((subCategory) => (
             <li key={subCategory} className="mb-4">
               <button
                 onClick={() => handleScrollToSubcategory(subCategory)}
-                className="text-lg hover:text-blue-300 transition-colors duration-200"
+                className=" hover:text-white hover:bg-blue-500 transition-colors duration-200 bg-gray-300 w-full py-1 rounded-md font-semibold text-xl cursor-pointer"
               >
                 {subCategory}
               </button>
