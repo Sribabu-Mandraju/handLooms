@@ -122,7 +122,7 @@ const Navbar = () => {
                                   e.preventDefault();
                                   handleCategoryClick(category._id);
                                 }}
-                                className="block text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded px-2 py-1 transition-colors"
+                                className="block text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded px-2 py-1 transition-colors cursor-pointer"
                               >
                                 {subCategory.name}
                               </a>
