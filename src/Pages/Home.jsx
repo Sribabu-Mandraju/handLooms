@@ -12,7 +12,7 @@ import Discover from '../components/Discover'
 const Home = () => {
   return (
     <div className='flex flex-col'>
-        <Navbar/>
+        {/* <Navbar/> */}
         
         <div className=' px-[10px] lg:px-[80px]'>
         <Carousel/>
