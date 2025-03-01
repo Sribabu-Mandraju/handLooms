@@ -5,6 +5,8 @@ import "./App.css";
 import "./index.css";
 import Navbar from "./components/Navbar";
 import ProductListing from "./components/ProductListing";
+import ProductCard from "./components/shared/ProductCard";
+import Cart from "./Pages/cart/Cart";
 
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/productCard" element={<ProductCard />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/category/:categoryId" element={<ProductListing />} />
       </Routes>
     </Router>
