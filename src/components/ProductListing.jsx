@@ -162,7 +162,7 @@ const ProductListing = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="max-w-[1440px] mx-auto px-4 py-6">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar */}
         <div className="lg:w-1/4 w-full max-md:hidden">
@@ -244,11 +244,11 @@ const ProductListing = () => {
                         {product.name}
                       </h3>
 
+                      <p className="text-gray-600 text-xs sm:text-sm mb-3">
+                        {product.sub_category}
+                      </p>
                       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                         <div>
-                          <p className="text-gray-600 text-xs sm:text-sm mb-1">
-                            {product.sub_category}
-                          </p>
                           <p className="text-base sm:text-lg font-bold text-gray-900">
                             ₹{product.quantities[0]?.product_cost}
                             {product.quantities[0]?.mrp_cost >

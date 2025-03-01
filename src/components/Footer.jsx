@@ -12,7 +12,7 @@ import appStore from "../assets/app_store.png";
 const Footer = () => {
   return (
     <div className="px-8 py-10 bg-gray-100">
-      <div className="container mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <hr className="border-gray-300 mb-8" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -88,7 +88,7 @@ const Footer = () => {
         </div>
         <hr className="border-gray-300 mt-10 mb-6" />
         <p className="text-center text-gray-600 text-sm">
-          © HandLoom. All Rights Reserved.
+          © Digital Mall. All Rights Reserved.
         </p>
       </div>
     </div>

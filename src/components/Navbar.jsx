@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { Search, ShoppingBag, Heart, User, ChevronDown } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../assets/logo1.png";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
@@ -59,31 +60,32 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <nav className="bg-white shadow-sm relative z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div
-              className="flex-shrink-0 cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              <h1 className="text-2xl font-bold text-gray-900">ShopHub</h1>
-            </div>
+    <div className="sticky top-0 z-100 left-0 right-0">
+      <div className="bg-red-700 py-1.5">
+        <div className="max-w-[1440px] px-4 sm:px-6 lg:px-8 mx-auto font-bold text-lg text-white font-sans">
+          <h1>Contact Centre: 086 111 8888</h1>
+        </div>
+      </div>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8 max-lg:hidden">
-              <div className="relative">
-                <input
-                  type="text"
-                  className="w-full bg-gray-100 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Search for products..."
-                />
-                <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              </div>
-            </div>
+      <nav className="bg-white shadow-sm relative z-50 pt-1.5">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link className="flex-shrink-0 cursor-pointer" to="/">
+              <img src={Logo} alt="Logo" className="h-16 mx-auto md:mx-0" />
+            </Link>
 
             {/* Navigation Icons */}
             <div className="flex items-center space-x-6">
+              <div className="flex-1 max-w-2xl min-w-sm mx-8 max-lg:hidden">
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="w-full bg-white rounded-full pl-11 pr-4 py-2.5 focus:outline-none border border-gray-400"
+                    placeholder="Search for products..."
+                  />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
               <Heart className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
               <User className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
               <div
@@ -101,14 +103,17 @@ const Navbar = () => {
           </div>
 
           {/* Categories Menu with Dropdowns - Using API Data */}
-          <div className="hidden sm:flex items-center space-x-8 py-4">
+        </div>
+
+        <div className="w-full bg-gray-100">
+          <div className="max-w-[1440px] mx-auto hidden sm:flex items-center mt-1 space-x-8 py-5 px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="text-gray-500">Loading categories...</div>
             ) : (
               categories.map((category) => (
                 <div key={category._id} className="relative group">
                   <div
-                    className="flex items-center text-gray-600 hover:text-gray-900 cursor-pointer"
+                    className="flex items-center font-semibold uppercase text-gray-600 hover:text-gray-900 cursor-pointer"
                     onClick={() => handleCategoryClick(category._id)}
                   >
                     {category.name}
@@ -117,7 +122,6 @@ const Navbar = () => {
                         <ChevronDown className="ml-1 h-4 w-4" />
                       )}
                   </div>
-
                   {/* Dropdown Menu - Only show if there are subcategories */}
                   {category.sub_categories &&
                     category.sub_categories.length > 0 && (

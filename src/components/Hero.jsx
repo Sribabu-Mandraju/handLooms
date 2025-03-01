@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -16,9 +16,13 @@ const categories = [
   { image: Hero_2, name: "Online Services" },
 ];
 
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, []);
+
 const Hero = () => {
   return (
-    <div className="w-full mb-[100px]">
+    <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2 ">
         <div className="md:col-span-4 w-full mb-[20px] md:mb-[0px]">
           <Swiper
