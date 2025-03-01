@@ -17,8 +17,8 @@ const Home = () => {
           <Carousel />
         </div>
 
-        <TrendyProducts />
-        <LimitedEdition />
+        {/* <TrendyProducts /> */}
+        {/* <LimitedEdition /> */}
         {/* <Discover /> */}
         {/* <Stats /> */}
       </div>

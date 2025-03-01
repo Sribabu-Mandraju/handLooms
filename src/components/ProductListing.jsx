@@ -206,14 +206,37 @@ const ProductListing = () => {
                 {products[subCategory]?.map((product) => (
                   <div
                     key={product._id}
-                    className="bg-white max-w-84 w-full rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className="bg-white max-w-84 w-full rounded-lg overflow-hidden shadow-t-md shadow-sm  hover:shadow-md transition-all duration-300 relative"
                   >
                     <div className="relative h-48 sm:h-56 lg:h-64">
                       <img
-                        src={`https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg`}
+                        src={`https://tse1.mm.bing.net/th?id=OIP.lYiEUEqLjXB3Hi32BLl0ZQHaHC&pid=Api`}
                         alt={product.name}
                         className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
                       />
+                      {/* Heart Icon for Like/Dislike */}
+                      <button
+                        className="absolute cursor-pointer top-2 right-2 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors duration-200 heart-toggle"
+                        onClick={(e) => {
+                          const heart = e.currentTarget.querySelector("svg");
+                          heart.classList.toggle("liked");
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                          />
+                        </svg>
+                      </button>
                     </div>
 
                     <div className="p-3 sm:p-4">

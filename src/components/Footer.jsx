@@ -11,8 +11,8 @@ import appStore from "../assets/app_store.png";
 
 const Footer = () => {
   return (
-    <div className="px-6 md:px-20 py-10 bg-gray-100">
-      <div className="max-w-7xl mx-auto">
+    <div className="px-8 py-10 bg-gray-100">
+      <div className="container mx-auto">
         <hr className="border-gray-300 mb-8" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -79,7 +79,7 @@ const Footer = () => {
                     className="relative inline-block transition duration-300 text-gray-700 group-hover:text-gray-900"
                   >
                     {item}
-                    <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-gray-900 transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute left-0 bottom-0 w-0 h-[0.5px] bg-gray-900 transition-all duration-300 group-hover:w-full"></span>
                   </a>
                 </li>
               ))}

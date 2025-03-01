@@ -1,13 +1,32 @@
 @import "tailwindcss";
 
-
 ::-webkit-scrollbar {
-    display: none;
-  }
-    body {
-    overflow: auto;
-  }
-  .swiper-button-prev:after, .swiper-button-next:after {
-      color: gray;
-      font-size: 20px;
+  display: none;
+}
+body {
+  overflow: auto;
+}
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  color: gray;
+  font-size: 20px;
+}
+
+.heart-toggle svg {
+  transition: color 0.2s ease, fill 0.2s ease;
+}
+
+.heart-toggle .liked {
+  color: #ef4444;
+  fill: currentColor;
+}
+
+.shadow-t-md {
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.shadow-t-md:hover {
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08), 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 -2px 4px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
