@@ -21,11 +21,6 @@ const Home = () => {
         <div className=" px-[10px] lg:px-[80px]">
           <NewArrivals />
         </div>
-
-        {/* <TrendyProducts /> */}
-        {/* <LimitedEdition /> */}
-        {/* <Discover /> */}
-        {/* <Stats /> */}
       </div>
       <Footer />
     </main>
