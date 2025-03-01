@@ -2,6 +2,7 @@
 
 import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useCart } from "../context/CartContext";
 
 const ProductListing = () => {
   const { categoryId } = useParams();
@@ -13,6 +14,7 @@ const ProductListing = () => {
   const [error, setError] = useState(null);
   const [activeSubcategory, setActiveSubcategory] = useState(null);
   const subcategoryRefs = useRef({});
+  const { addToCart } = useCart(); // Use the cart context
 
   const normalizeString = (str) => {
     if (!str) return "";
@@ -55,6 +57,8 @@ const ProductListing = () => {
                   { product_cost: 999, mrp_cost: 1299, discount: 23 },
                 ],
                 sub_category: subCategory,
+                // Add price field for cart compatibility
+                price: "$999",
               }));
             return acc;
           }, {});
@@ -97,7 +101,7 @@ const ProductListing = () => {
     };
 
     if (categoryId) fetchProductsAndSubcategories();
-  }, [categoryId, location.search]);
+  }, [categoryId, location.search]); // Removed normalizeString as a dependency
 
   useEffect(() => {
     const observerOptions = {
@@ -130,7 +134,7 @@ const ProductListing = () => {
         if (ref) observer.unobserve(ref);
       });
     };
-  }, [subcategories]);
+  }, []); // Removed subcategories as a dependency
 
   const handleScrollToSubcategory = (subCategory) => {
     const ref = subcategoryRefs.current[subCategory];
@@ -143,6 +147,19 @@ const ProductListing = () => {
         `/category/${categoryId}?sub=${encodeURIComponent(subCategory)}`
       );
     }
+  };
+
+  // Handle adding product to cart
+  const handleAddToCart = (product) => {
+    // Format the product to match cart item structure
+    const cartItem = {
+      ...product,
+      price: `$${product.quantities[0]?.product_cost}`,
+    };
+    addToCart(cartItem);
+
+    // Optional: Show a notification or feedback
+    alert(`${product.name} added to cart!`);
   };
 
   if (loading) {
@@ -206,7 +223,7 @@ const ProductListing = () => {
                 {products[subCategory]?.map((product) => (
                   <div
                     key={product._id}
-                    className="bg-white max-w-84 w-full rounded-lg overflow-hidden shadow-t-md shadow-sm  hover:shadow-md transition-all duration-300 relative"
+                    className="bg-white max-w-84 w-full rounded-lg overflow-hidden shadow-t-md shadow-sm hover:shadow-md transition-all duration-300 relative"
                   >
                     <div className="relative h-48 sm:h-56 lg:h-64">
                       <img
@@ -260,7 +277,10 @@ const ProductListing = () => {
                           </p>
                         </div>
 
-                        <button className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 rounded-sm cursor-pointer hover:bg-blue-700 transition-colors duration-200 text-sm">
+                        <button
+                          className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 rounded-sm cursor-pointer hover:bg-blue-700 transition-colors duration-200 text-sm"
+                          onClick={() => handleAddToCart(product)}
+                        >
                           Add to Cart
                         </button>
                       </div>
