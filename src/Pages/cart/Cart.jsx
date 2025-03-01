@@ -85,7 +85,7 @@ const Cart = () => {
       <div className="mt-6 border-t pt-4">
         <div className="flex justify-between text-xl font-semibold text-gray-900">
           <p>Subtotal</p>
-          <p>${total}</p>
+          <p>{total}</p>
         </div>
         <p className="mt-1 text-sm text-gray-500">
           Shipping and taxes calculated at checkout.

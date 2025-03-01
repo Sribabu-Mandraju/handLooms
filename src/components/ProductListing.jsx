@@ -1,47 +1,50 @@
-"use client"
+"use client";
 
-import { useParams, useLocation } from "react-router-dom"
-import { useState, useEffect, useRef } from "react"
-import { useCart } from "../context/CartContext"
+import { useParams, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useCart } from "../context/CartContext";
 
 const ProductListing = () => {
-  const { categoryId } = useParams()
-  const location = useLocation()
-  const [category, setCategory] = useState(null)
-  const [subcategories, setSubcategories] = useState([])
-  const [products, setProducts] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [activeSubcategory, setActiveSubcategory] = useState(null)
-  const subcategoryRefs = useRef({})
-  const { addToCart } = useCart() // Use the cart context
+  const { categoryId } = useParams();
+  const location = useLocation();
+  const [category, setCategory] = useState(null);
+  const [subcategories, setSubcategories] = useState([]);
+  const [products, setProducts] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeSubcategory, setActiveSubcategory] = useState(null);
+  const subcategoryRefs = useRef({});
+  const { addToCart } = useCart(); // Use the cart context
 
   const normalizeString = (str) => {
-    if (!str) return ""
+    if (!str) return "";
     return decodeURIComponent(str)
       .replace(/%20/g, " ")
       .replace(/&/g, "&")
       .replace(/&/g, " & ")
       .replace(/\s+/g, " ")
-      .trim()
-  }
+      .trim();
+  };
 
   useEffect(() => {
     const fetchProductsAndSubcategories = async () => {
       try {
-        setLoading(true)
-        const response = await fetch("https://api.meebuddy.com/app/v4/common/shop_categories", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ category_id: categoryId }),
-        })
+        setLoading(true);
+        const response = await fetch(
+          "https://api.meebuddy.com/app/v4/common/shop_categories",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ category_id: categoryId }),
+          }
+        );
 
-        const result = await response.json()
+        const result = await response.json();
         if (result.status === "success") {
-          const res = result.data.find((r) => r._id === categoryId)
-          setCategory(res)
-          const subcategoryList = res.sub_categories.map((sub) => sub.name)
-          setSubcategories(subcategoryList)
+          const res = result.data.find((r) => r._id === categoryId);
+          setCategory(res);
+          const subcategoryList = res.sub_categories.map((sub) => sub.name);
+          setSubcategories(subcategoryList);
 
           const sampleProducts = subcategoryList.reduce((acc, subCategory) => {
             acc[subCategory] = Array(3)
@@ -50,88 +53,101 @@ const ProductListing = () => {
                 _id: `sample-${subCategory}-${index}`,
                 name: `Sample ${subCategory} Product ${index + 1}`,
                 images: [{ image_url: subCategory.image_url }],
-                quantities: [{ product_cost: 999, mrp_cost: 1299, discount: 23 }],
+                quantities: [
+                  { product_cost: 999, mrp_cost: 1299, discount: 23 },
+                ],
                 sub_category: subCategory,
                 // Add price field for cart compatibility
                 price: "$999",
-              }))
-            return acc
-          }, {})
+              }));
+            return acc;
+          }, {});
 
-          setProducts(sampleProducts)
+          setProducts(sampleProducts);
 
-          const searchParams = new URLSearchParams(location.search)
-          const subParamRaw = searchParams.get("sub") || ""
-          const subParam = normalizeString(subParamRaw)
+          const searchParams = new URLSearchParams(location.search);
+          const subParamRaw = searchParams.get("sub") || "";
+          const subParam = normalizeString(subParamRaw);
 
-          let matchedSubcategory = subcategoryList.find((sub) => sub === subParamRaw)
+          let matchedSubcategory = subcategoryList.find(
+            (sub) => sub === subParamRaw
+          );
           if (!matchedSubcategory) {
-            matchedSubcategory = subcategoryList.find((sub) => normalizeString(sub) === subParam)
+            matchedSubcategory = subcategoryList.find(
+              (sub) => normalizeString(sub) === subParam
+            );
           }
 
           if (matchedSubcategory) {
-            setActiveSubcategory(matchedSubcategory)
+            setActiveSubcategory(matchedSubcategory);
             requestAnimationFrame(() => {
               setTimeout(() => {
-                const ref = subcategoryRefs.current[matchedSubcategory]
+                const ref = subcategoryRefs.current[matchedSubcategory];
                 if (ref) {
-                  ref.scrollIntoView({ behavior: "smooth", block: "start" })
+                  ref.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
-              }, 500)
-            })
+              }, 500);
+            });
           }
         } else {
-          throw new Error("Failed to fetch products")
+          throw new Error("Failed to fetch products");
         }
       } catch (err) {
-        setError(err.message)
-        console.error("Fetch error:", err)
+        setError(err.message);
+        console.error("Fetch error:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    if (categoryId) fetchProductsAndSubcategories()
-  }, [categoryId, location.search]) // Removed normalizeString as a dependency
+    if (categoryId) fetchProductsAndSubcategories();
+  }, [categoryId, location.search]); // Removed normalizeString as a dependency
 
   useEffect(() => {
     const observerOptions = {
       root: null,
       rootMargin: "0px",
       threshold: 0.5,
-    }
+    };
 
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const subCategory = entry.target.getAttribute("data-subcategory")
-          setActiveSubcategory(subCategory)
+          const subCategory = entry.target.getAttribute("data-subcategory");
+          setActiveSubcategory(subCategory);
         }
-      })
-    }
+      });
+    };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
 
     // Observe all subcategory sections
     Object.values(subcategoryRefs.current).forEach((ref) => {
-      if (ref) observer.observe(ref)
-    })
+      if (ref) observer.observe(ref);
+    });
 
     return () => {
       Object.values(subcategoryRefs.current).forEach((ref) => {
-        if (ref) observer.unobserve(ref)
-      })
-    }
-  }, []) // Removed subcategories as a dependency
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, []); // Removed subcategories as a dependency
 
   const handleScrollToSubcategory = (subCategory) => {
-    const ref = subcategoryRefs.current[subCategory]
+    const ref = subcategoryRefs.current[subCategory];
     if (ref) {
-      ref.scrollIntoView({ behavior: "smooth", block: "start" })
-      setActiveSubcategory(subCategory)
-      window.history.pushState({}, "", `/category/${categoryId}?sub=${encodeURIComponent(subCategory)}`)
+      ref.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSubcategory(subCategory);
+      window.history.pushState(
+        {},
+        "",
+        `/category/${categoryId}?sub=${encodeURIComponent(subCategory)}`
+      );
     }
-  }
+  };
 
   // Handle adding product to cart
   const handleAddToCart = (product) => {
@@ -139,23 +155,27 @@ const ProductListing = () => {
     const cartItem = {
       ...product,
       price: `$${product.quantities[0]?.product_cost}`,
-    }
-    addToCart(cartItem)
+    };
+    addToCart(cartItem);
 
     // Optional: Show a notification or feedback
-    alert(`${product.name} added to cart!`)
-  }
+    alert(`${product.name} added to cart!`);
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-600">
+        {error}
+      </div>
+    );
   }
 
   return (
@@ -164,7 +184,9 @@ const ProductListing = () => {
         {/* Sidebar */}
         <div className="lg:w-1/4 w-full max-md:hidden">
           <div className="bg-white border-r-1 p-4 lg:sticky lg:top-4 border-gray-300">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">Subcategories</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+              Subcategories
+            </h2>
             <ul className="space-y-2">
               {subcategories.map((subCategory) => (
                 <li key={subCategory}>
@@ -194,7 +216,9 @@ const ProductListing = () => {
               data-subcategory={subCategory}
               className="mb-10 sm:mb-12"
             >
-              <h3 className="text-xl font-semibold pt-4 mb-10 text-gray-800">{subCategory}</h3>
+              <h3 className="text-xl font-semibold pt-4 mb-10 text-gray-800">
+                {subCategory}
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8 place-items-center">
                 {products[subCategory]?.map((product) => (
                   <div
@@ -211,8 +235,8 @@ const ProductListing = () => {
                       <button
                         className="absolute cursor-pointer top-2 right-2 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors duration-200 heart-toggle"
                         onClick={(e) => {
-                          const heart = e.currentTarget.querySelector("svg")
-                          heart.classList.toggle("liked")
+                          const heart = e.currentTarget.querySelector("svg");
+                          heart.classList.toggle("liked");
                         }}
                       >
                         <svg
@@ -239,10 +263,13 @@ const ProductListing = () => {
 
                       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
                         <div>
-                          <p className="text-gray-600 text-xs sm:text-sm mb-1">{product.sub_category}</p>
+                          <p className="text-gray-600 text-xs sm:text-sm mb-1">
+                            {product.sub_category}
+                          </p>
                           <p className="text-base sm:text-lg font-bold text-gray-900">
                             ₹{product.quantities[0]?.product_cost}
-                            {product.quantities[0]?.mrp_cost > product.quantities[0]?.product_cost && (
+                            {product.quantities[0]?.mrp_cost >
+                              product.quantities[0]?.product_cost && (
                               <span className="text-xs sm:text-sm text-gray-500 line-through ml-2">
                                 ₹{product.quantities[0]?.mrp_cost}
                               </span>
@@ -266,8 +293,7 @@ const ProductListing = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductListing
-
+export default ProductListing;

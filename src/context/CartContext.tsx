@@ -1,22 +1,34 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-interface CartItem {
-  id: string;
+interface SubCategory {
+  _id: string;
   name: string;
+  image_url: string;
+}
+
+interface Center {
+  _id: string;
+  name: string;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  image_url: string;
   price: string;
-  image: string;
-  title2: string;
+  mrp: number;
+  discount: number;
+  sub_category: SubCategory;
+  center: Center;
+}
+
+interface CartItem extends Product {
   quantity: number;
-  quantities?: {
-    product_cost: number;
-    mrp_cost: number;
-    discount: number;
-  }[];
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: CartItem) => void;
+  addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -35,23 +47,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product: CartItem) => {
+  const parsePrice = (price: string): number => {
+    return parseFloat(price.replace(/[₹$,]/g, ""));
+  };
+
+  const addToCart = (product: Product) => {
     setItems((currentItems) => {
       const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === product.id
+        (item) => item._id === product._id
       );
 
       if (existingItemIndex !== -1) {
-        // Update existing item
         const updatedItems = [...currentItems];
         updatedItems[existingItemIndex] = {
           ...updatedItems[existingItemIndex],
-          quantity:
-            product.quantity || updatedItems[existingItemIndex].quantity + 1,
+          quantity: updatedItems[existingItemIndex].quantity + 1,
         };
         return updatedItems;
       } else {
-        // Add new item
         return [...currentItems, { ...product, quantity: 1 }];
       }
     });
@@ -59,7 +72,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const removeFromCart = (productId: string) => {
     setItems((currentItems) =>
-      currentItems.filter((item) => item.id !== productId)
+      currentItems.filter((item) => item._id !== productId)
     );
   };
 
@@ -68,7 +81,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     setItems((currentItems) =>
       currentItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
+        item._id === productId ? { ...item, quantity } : item
       )
     );
   };
@@ -79,8 +92,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const total = items.reduce((sum, item) => {
-    const price = parseFloat(item.price);
-    return sum + price * item.quantity;
+    const itemPrice = parsePrice(item.price);
+    return sum + itemPrice * item.quantity;
   }, 0);
 
   return (

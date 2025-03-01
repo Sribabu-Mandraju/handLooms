@@ -1,162 +1,103 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { Heart } from "lucide-react";
-import saree1 from "../assets/sarees/1-181-200x300.jpg";
-import saree2 from "../assets/sarees/1-182-200x300.jpg";
-import saree3 from "../assets/sarees/1-183-200x300.jpg";
-import saree4 from "../assets/sarees/1-184-200x300.jpg";
-import saree5 from "../assets/sarees/1-185-200x300.jpg";
-import saree6 from "../assets/sarees/1-187-200x300.jpg";
-import saree7 from "../assets/sarees/1-395-200x300.jpg";
-import saree8 from "../assets/sarees/1-403-200x300.jpg";
 
 const NewArrivals = () => {
   const { addToCart, items } = useCart();
   const [loading, setLoading] = useState({});
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(
+        "https://api.meebuddy.com/app/v4/common/shop_categories",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }
+      );
+      const result = await response.json();
+      if (result.status === "success") {
+        setCategories(result.data);
+        generateSampleProducts(result.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const generateSampleProducts = (categories) => {
+    const sampleProducts = categories.flatMap((category) =>
+      category.sub_categories.map((subCategory, index) => {
+        const price = Math.floor(Math.random() * 5000) + 1000;
+        const mrp = Math.floor(Math.random() * 7000) + 2000;
+        return {
+          _id: `${subCategory._id}-${index}`,
+          name: `${subCategory.name} Item ${index + 1}`,
+          image_url:
+            subCategory.image_url ||
+            "https://images.meebuddy.com/products/no_image.jpg",
+          price: `₹${price}`,
+          mrp: mrp,
+          discount: 20,
+          sub_category: subCategory,
+          center: category.center,
+          rating: (Math.random() * 2 + 3).toFixed(1),
+        };
+      })
+    );
+    setProducts(sampleProducts.slice(0, 8));
+  };
 
   const handleAddToCart = async (product) => {
     try {
-      setLoading((prev) => ({ ...prev, [product.id]: true }));
+      setLoading((prev) => ({ ...prev, [product._id]: true }));
 
       // Check if item already exists in cart
-      const existingItem = items.find((item) => item.id === product.id);
+      const existingItem = items.find((item) => item._id === product._id);
 
-      const cartItem = {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        title2: product.title2,
-        quantity: existingItem ? existingItem.quantity + 1 : 1,
-        quantities: [
-          {
-            product_cost: parseFloat(product.price),
-            mrp_cost: parseFloat(
-              product.actualprice.replace("₹", "").replace(",", "")
-            ),
-            discount: parseInt(product.discount),
-          },
-        ],
-      };
-
-      addToCart(cartItem);
+      addToCart(product);
 
       if (existingItem) {
         alert(`Increased ${product.name} quantity in cart!`);
       } else {
         alert(`${product.name} added to cart!`);
       }
-      alert("nnnn")
     } catch (error) {
       console.error("Error adding to cart:", error);
       alert("Failed to add item to cart. Please try again.");
     } finally {
-      setLoading((prev) => ({ ...prev, [product.id]: false }));
+      setLoading((prev) => ({ ...prev, [product._id]: false }));
     }
   };
 
-  const featuredProducts = [
-    {
-      id: "1",
-      image: saree1,
-      name: "Uppada Cotton Saree",
-      title2: "Uppada Jamdhani Cotton Saree",
-      actualprice: "₹4,925",
-      price: "3940",
-      discount: "20%",
-      rating: 4.1,
-    },
-    {
-      id: "2",
-      image: saree2,
-      name: "Bandar Cotton Saree",
-      title2: "Bandar/Polavaram Saree",
-      actualprice: "₹2,272",
-      price: "1818",
-      discount: "20%",
-      rating: 4.5,
-    },
-    {
-      id: "3",
-      image: saree3,
-      name: "Venkatagiri Cotton Saree",
-      title2: "Venkatagiri Cotton Saree",
-      actualprice: "₹2,315",
-      price: "1852",
-      discount: "20%",
-      rating: 4.8,
-    },
-    {
-      id: "4",
-      image: saree4,
-      name: "Madhavaram Cotton Saree",
-      title2: "Madhavaram Cotton Zari Saree",
-      actualprice: "₹4,459",
-      price: "3567",
-      discount: "20%",
-      rating: 4.1,
-    },
-    {
-      id: "5",
-      image: saree5,
-      name: "Bandar Cotton Saree",
-      title2: "Bandar Saree",
-      actualprice: "₹4,940",
-      price: "3952",
-      discount: "20%",
-      rating: 4.3,
-    },
-    {
-      id: "6",
-      image: saree6,
-      name: "Venkatagiri Cotton Saree",
-      title2: "Venkatagiri Cotton Saree",
-      actualprice: "₹2,760",
-      price: "2208",
-      discount: "20%",
-      rating: 4.8,
-    },
-    {
-      id: "7",
-      image: saree7,
-      name: "Rajahmundry Cotton Saree",
-      title2: "Rajahmundry Cotton Saree",
-      actualprice: "₹2,239",
-      price: "1791",
-      discount: "20%",
-      rating: 4.2,
-    },
-    {
-      id: "8",
-      image: saree8,
-      name: "Venkatagiri Cotton Saree",
-      title2: "Venkatagiri Cotton Saree",
-      actualprice: "₹2,960",
-      price: "2368",
-      discount: "20%",
-      rating: 4.1,
-    },
-  ];
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {featuredProducts.map((product) => (
+      {products.map((product) => (
         <div
-          key={product.id}
+          key={product._id}
           className="bg-white rounded-lg shadow-sm overflow-hidden group flex flex-col items-center md:w-[300px] hover:shadow-lg transition-shadow duration-300"
         >
           <div className="relative h-64">
             <img
-              src={product.image}
+              src={product.image_url}
               alt={product.name}
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 pt-[20px]"
             />
             <button className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white">
               <Heart className="h-5 w-5 text-gray-600" />
             </button>
-            {product.discount && (
+            {product.discount > 0 && (
               <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-md text-sm">
-                {product.discount} OFF
+                {product.discount}% OFF
               </div>
             )}
           </div>
@@ -164,14 +105,16 @@ const NewArrivals = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
               {product.name}
             </h3>
-            <p className="text-sm text-gray-600 mb-2">{product.title2}</p>
+            <p className="text-sm text-gray-600 mb-2">
+              {product.sub_category.name}
+            </p>
             <div className="flex items-center justify-between mb-2">
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900">
-                  ₹{product.price}
+                  {product.price}
                 </span>
                 <span className="text-sm text-gray-500 line-through">
-                  {product.actualprice}
+                  ₹{product.mrp}
                 </span>
               </div>
               <div className="flex items-center bg-green-50 px-2 py-1 rounded">
@@ -183,16 +126,16 @@ const NewArrivals = () => {
             </div>
             <button
               onClick={() => handleAddToCart(product)}
-              disabled={loading[product.id]}
+              disabled={loading[product._id]}
               className={`mt-4 w-full py-2 rounded-lg transition-all duration-300 flex items-center justify-center gap-2
                 ${
-                  loading[product.id]
+                  loading[product._id]
                     ? "bg-blue-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 hover:scale-[1.02]"
                 } 
                 text-white`}
             >
-              {loading[product.id] ? (
+              {loading[product._id] ? (
                 <svg
                   className="animate-spin h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"

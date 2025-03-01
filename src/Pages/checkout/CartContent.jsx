@@ -3,10 +3,30 @@ import { useCart } from "../../context/CartContext";
 const CartContent = ({ onNext }) => {
   const { items, updateQuantity, removeFromCart } = useCart();
 
+  const parsePrice = (price) => {
+    return parseFloat(price.replace(/[₹$,]/g, ""));
+  };
+
+  const formatPrice = (price) => {
+    // Check if price already has a currency symbol
+    if (
+      typeof price === "string" &&
+      (price.includes("₹") || price.includes("$"))
+    ) {
+      return price;
+    }
+    return `₹${price}`;
+  };
+
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity >= 1) {
       updateQuantity(itemId, newQuantity);
     }
+  };
+
+  const calculateItemTotal = (item) => {
+    const price = parsePrice(item.price);
+    return (price * item.quantity).toFixed(2);
   };
 
   return (
@@ -49,12 +69,15 @@ const CartContent = ({ onNext }) => {
             <div className="space-y-6">
               {items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg border border-gray-100 hover:border-blue-100 hover:bg-blue-50 transition-all duration-300"
                 >
-                  <div className="relative w-full md:w-24 h-24 rounded-lg overflow-hidden">
+                  <div className="relative w-full md:w-32 h-32 rounded-lg overflow-hidden">
                     <img
-                      src={item.image || "/placeholder.svg"}
+                      src={
+                        item.image_url ||
+                        "https://images.meebuddy.com/products/no_image.jpg"
+                      }
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />
@@ -64,14 +87,14 @@ const CartContent = ({ onNext }) => {
                       {item.name}
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      ₹{parseFloat(item.price).toFixed(2)}
+                      {formatPrice(item.price)}
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden">
                         <button
                           className="w-10 h-10 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
                           onClick={() =>
-                            handleQuantityChange(item.id, item.quantity - 1)
+                            handleQuantityChange(item._id, item.quantity - 1)
                           }
                         >
                           <span className="text-xl text-gray-600">−</span>
@@ -82,7 +105,7 @@ const CartContent = ({ onNext }) => {
                         <button
                           className="w-10 h-10 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
                           onClick={() =>
-                            handleQuantityChange(item.id, item.quantity + 1)
+                            handleQuantityChange(item._id, item.quantity + 1)
                           }
                         >
                           <span className="text-xl text-gray-600">+</span>
@@ -92,11 +115,11 @@ const CartContent = ({ onNext }) => {
                   </div>
                   <div className="flex flex-col items-end gap-2 min-w-[120px]">
                     <p className="text-lg font-bold text-gray-800">
-                      ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
+                      {formatPrice(calculateItemTotal(item))}
                     </p>
                     <button
                       className="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1 transition-colors"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item._id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
