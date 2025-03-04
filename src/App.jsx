@@ -8,10 +8,12 @@ import ProductListing from "./components/ProductListing";
 import ProductCard from "./components/shared/ProductCard";
 import Cart from "./Pages/cart/Cart";
 import Checkout from "./Pages/checkout/Checkout";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

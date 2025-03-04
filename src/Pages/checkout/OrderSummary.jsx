@@ -23,7 +23,7 @@ const OrderSummary = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl sticky top-4">
+    <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl ">
       <div className="p-6">
         <h2 className="text-xl font-bold mb-6 text-gray-800 border-b pb-4 flex items-center gap-2">
           <svg
@@ -137,22 +137,51 @@ const OrderSummary = ({
         )}
 
         <div className="mt-6 pt-6 border-t">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-green-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              <span>100% Secure Payments</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/179/179431.png"
+                alt="Visa"
+                className="h-8 w-auto"
               />
-            </svg>
-            <span>100% Secure Payments</span>
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/179/179457.png"
+                alt="Mastercard"
+                className="h-8 w-auto"
+              />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/179/179457.png"
+                alt="American Express"
+                className="h-8 w-auto"
+              />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/179/179457.png"
+                alt="PayPal"
+                className="h-8 w-auto"
+              />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/179/179457.png"
+                alt="UPI"
+                className="h-8 w-auto"
+              />
+            </div>
           </div>
         </div>
       </div>

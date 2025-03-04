@@ -61,7 +61,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-100 left-0 right-0">
-      <div className="bg-red-700 py-1.5">
+      <div className="bg-red-800 py-0.5">
         <div className="max-w-[1440px] px-4 sm:px-6 lg:px-8 mx-auto font-bold text-lg text-white font-sans">
           <h1>Contact Centre: 086 111 8888</h1>
         </div>
@@ -106,14 +106,14 @@ const Navbar = () => {
         </div>
 
         <div className="w-full bg-gray-100">
-          <div className="max-w-[1440px] mx-auto hidden sm:flex items-center mt-1 space-x-8 py-5 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1440px] mx-auto hidden sm:flex items-center mt-1 space-x-8 py-7 px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="text-gray-500">Loading categories...</div>
             ) : (
               categories.map((category) => (
                 <div key={category._id} className="relative group">
                   <div
-                    className="flex items-center font-semibold uppercase text-gray-600 hover:text-gray-900 cursor-pointer"
+                    className="flex items-center font-semibold uppercase text-black hover:text-gray-900 cursor-pointer"
                     onClick={() => handleCategoryClick(category._id)}
                   >
                     {category.name}
@@ -125,7 +125,7 @@ const Navbar = () => {
                   {/* Dropdown Menu - Only show if there are subcategories */}
                   {category.sub_categories &&
                     category.sub_categories.length > 0 && (
-                      <div className="absolute left-0 top-full w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <div className="absolute left-0 top-[130%] w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                         <div className="p-6">
                           {/* Subcategories */}
                           <div>

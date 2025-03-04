@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
 const CartContent = ({ onNext }) => {
@@ -60,9 +61,12 @@ const CartContent = ({ onNext }) => {
             <p className="text-gray-500 mb-6">
               Add items to your cart to continue shopping
             </p>
-            <button className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105">
+            <Link
+              to="/"
+              className="px-8 py-3 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105"
+            >
               Continue Shopping
-            </button>
+            </Link>
           </div>
         ) : (
           <>
@@ -92,7 +96,7 @@ const CartContent = ({ onNext }) => {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden">
                         <button
-                          className="w-10 h-10 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
+                          className="w-10 h-10 cursor-pointer flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
                           onClick={() =>
                             handleQuantityChange(item._id, item.quantity - 1)
                           }
@@ -103,7 +107,7 @@ const CartContent = ({ onNext }) => {
                           {item.quantity}
                         </span>
                         <button
-                          className="w-10 h-10 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
+                          className="w-10 h-10 cursor-pointer flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
                           onClick={() =>
                             handleQuantityChange(item._id, item.quantity + 1)
                           }

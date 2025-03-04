@@ -71,7 +71,7 @@ const ProgressSteps = ({ step }) => {
 const StepIcon = ({ step, currentStep, label, icon }) => (
   <div className="flex flex-col items-center">
     <div
-      className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-500 transform ${
+      className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-500 transform ${
         currentStep >= step
           ? "bg-blue-600 text-white ring-4 ring-blue-100 scale-110"
           : "bg-white text-gray-400 border-2 border-gray-200 scale-100"
@@ -79,7 +79,7 @@ const StepIcon = ({ step, currentStep, label, icon }) => (
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7 md:h-8 md:w-8"
+        className="h-6 w-6 md:h-7 md:w-7"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

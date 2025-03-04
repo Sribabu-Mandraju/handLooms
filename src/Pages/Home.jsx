@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useRef } from "react";
 import Footer from "../components/Footer";
-import Hero from "../components/Home/Home";
 import Category from "../components/Home/Category";
+import SubCategory from "../components/Home/SubCategory";
+import Hero from "../components/Home/Hero";
 
-import Stats from "../components/Stats";
-import Discover from "../components/Discover";
-import NewArrivals from "./TrendyProducts/NewArrivals";
 const Home = () => {
+  const categoryRef = useRef(null);
+
+  const scrollToCategory = () => {
+    const element = categoryRef.current;
+    if (element) {
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementPosition - 150,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <main className="w-full">
-      <div className="flex flex-col container mx-auto my-20">
-        <div className=" px-[10px] lg:px-[80px]">
-          <Carousel />
+    <>
+      <main className="w-full min-h-screen">
+        <Hero onExploreClick={scrollToCategory} />
+        <div className="w-full max-w-[1440px] mx-auto pb-10 px-8 max-md:px-4 max-sm:px-2">
+          <Category ref={categoryRef} />
+          <SubCategory />
         </div>
-        <div className="text-center font-bold text-2xl md:text-4xl py-3">
-          Trending Products
-        </div>
-        <div className=" px-[10px] lg:px-[80px]">
-          <NewArrivals />
-        </div>
-      </div>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 };
 export default Home;

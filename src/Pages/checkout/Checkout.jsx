@@ -9,7 +9,7 @@ import DeliveryContent from "./DeliveryContent";
 import OrderSummary from "./OrderSummary";
 
 const Checkout = () => {
-  const [step, setStep] = useState(1); // 1: Cart, 2: Address, 3: Delivery
+  const [step, setStep] = useState(1);
   const { total } = useCart();
   const deliveryCharge = 10;
   const [promoCode, setPromoCode] = useState("");
@@ -43,7 +43,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-6 bg-gray-50 min-h-screen">
+    <div className="max-w-6xl mx-auto p-4 mt-8 md:p-6 bg-gray-50 min-h-screen">
       <ProgressSteps step={step} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -14,7 +14,7 @@ const ProductListing = () => {
   const [error, setError] = useState(null);
   const [activeSubcategory, setActiveSubcategory] = useState(null);
   const subcategoryRefs = useRef({});
-  const { addToCart } = useCart(); // Use the cart context
+  const { addToCart } = useCart();
 
   const normalizeString = (str) => {
     if (!str) return "";
@@ -57,8 +57,8 @@ const ProductListing = () => {
                   { product_cost: 999, mrp_cost: 1299, discount: 23 },
                 ],
                 sub_category: subCategory,
-                // Add price field for cart compatibility
-                price: "$999",
+                sub_category_id: `sub-${index}`,
+                price: "999",
               }));
             return acc;
           }, {});
@@ -101,13 +101,13 @@ const ProductListing = () => {
     };
 
     if (categoryId) fetchProductsAndSubcategories();
-  }, [categoryId, location.search]); // Removed normalizeString as a dependency
+  }, [categoryId, location.search]);
 
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "0px",
-      threshold: 0.5,
+      rootMargin: "-80px 0px 0px 0px",
+      threshold: 0.1,
     };
 
     const observerCallback = (entries) => {
@@ -124,7 +124,6 @@ const ProductListing = () => {
       observerOptions
     );
 
-    // Observe all subcategory sections
     Object.values(subcategoryRefs.current).forEach((ref) => {
       if (ref) observer.observe(ref);
     });
@@ -134,12 +133,19 @@ const ProductListing = () => {
         if (ref) observer.unobserve(ref);
       });
     };
-  }, []); // Removed subcategories as a dependency
+  }, []);
 
   const handleScrollToSubcategory = (subCategory) => {
     const ref = subcategoryRefs.current[subCategory];
     if (ref) {
-      ref.scrollIntoView({ behavior: "smooth", block: "start" });
+      const elementPosition = ref.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - 200;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
       setActiveSubcategory(subCategory);
       window.history.pushState(
         {},
@@ -149,16 +155,21 @@ const ProductListing = () => {
     }
   };
 
-  // Handle adding product to cart
   const handleAddToCart = (product) => {
-    // Format the product to match cart item structure
     const cartItem = {
-      ...product,
-      price: `$${product.quantities[0]?.product_cost}`,
+      _id: product._id,
+      name: product.name,
+      price: product.quantities[0]?.product_cost.toString(),
+      mrp: product.quantities[0]?.mrp_cost,
+      discount: product.quantities[0]?.discount,
+      image_url: product.images[0]?.image_url,
+      sub_category: {
+        _id: product.sub_category_id || "",
+        name: product.sub_category,
+        image_url: "",
+      },
     };
     addToCart(cartItem);
-
-    // Optional: Show a notification or feedback
     alert(`${product.name} added to cart!`);
   };
 
@@ -183,7 +194,7 @@ const ProductListing = () => {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar */}
         <div className="lg:w-1/4 w-full max-md:hidden">
-          <div className="bg-white border-r-1 p-4 lg:sticky lg:top-4 border-gray-300">
+          <div className="bg-white border-r border-gray-300 p-4 sticky top-[200px] max-h-screen overflow-y-auto">
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
               Subcategories
             </h2>
@@ -231,7 +242,6 @@ const ProductListing = () => {
                         alt={product.name}
                         className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
                       />
-                      {/* Heart Icon for Like/Dislike */}
                       <button
                         className="absolute cursor-pointer top-2 right-2 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors duration-200 heart-toggle"
                         onClick={(e) => {
@@ -260,7 +270,6 @@ const ProductListing = () => {
                       <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
                         {product.name}
                       </h3>
-
                       <p className="text-gray-600 text-xs sm:text-sm mb-3">
                         {product.sub_category}
                       </p>
@@ -276,7 +285,6 @@ const ProductListing = () => {
                             )}
                           </p>
                         </div>
-
                         <button
                           className="bg-blue-600 text-white px-2 py-1.5 sm:px-4 rounded-sm cursor-pointer hover:bg-blue-700 transition-colors duration-200 text-sm"
                           onClick={() => handleAddToCart(product)}
