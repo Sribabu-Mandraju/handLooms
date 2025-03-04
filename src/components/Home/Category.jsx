@@ -1,6 +1,11 @@
 import React, { useEffect, useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import { Autoplay, Navigation } from "swiper/modules";
 const CategorySkeleton = () => (
   <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
     {[1, 2, 3, 4].map((index) => (
@@ -69,8 +74,24 @@ const Category = forwardRef((props, ref) => {
       {isLoading ? (
         <CategorySkeleton />
       ) : (
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <Swiper
+        slidesPerView={1} 
+        breakpoints={{
+          640: { slidesPerView: 2 }, 
+          1024: { slidesPerView: 3 }, 
+          1280: { slidesPerView: 4 }, 
+        }}
+        spaceBetween={20}
+        navigation
+        loop={true} 
+        autoplay={{ delay: 3000, disableOnInteraction: false }} 
+        modules={[Navigation, Autoplay]}
+        className="w-full"
+      >
+
+        <div className="grid grid-cols-1 xs:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {categories.map((category) => (
+            <SwiperSlide key={category.name}>
             <div
               key={category.name}
               className="relative rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
@@ -94,9 +115,66 @@ const Category = forwardRef((props, ref) => {
                 </div>
               </div>
             </div>
+            </SwiperSlide>
+          ))}
+            {categories.map((category) => (
+               <SwiperSlide key={category.name}>
+            <div
+              key={category.name}
+              className="relative rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
+              onClick={() => handleCategoryClick(category._id)}
+            >
+              <div className="aspect-[4/3] h-[280px]">
+                <img
+                  src={
+                    category.image_url || "https://via.placeholder.com/400x300"
+                  }
+                  alt={category.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6 group-hover:from-black/90 transition-all duration-300">
+                  <h3 className="text-xl font-semibold text-white mb-1 group-hover:translate-y-0 transform transition-transform duration-300">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-200 text-sm opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                    {category.items || "Explore Collection"}
+                  </p>
+                </div>
+              </div>
+            </div>
+            </SwiperSlide>
+          ))}
+            {categories.map((category) => (
+              <SwiperSlide key={category.name}>
+            <div
+              key={category.name}
+              className="relative rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-lg transition-all duration-300"
+              onClick={() => handleCategoryClick(category._id)}
+            >
+              <div className="aspect-[4/3] h-[280px]">
+                <img
+                  src={
+                    category.image_url || "https://via.placeholder.com/400x300"
+                  }
+                  alt={category.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6 group-hover:from-black/90 transition-all duration-300">
+                  <h3 className="text-xl font-semibold text-white mb-1 group-hover:translate-y-0 transform transition-transform duration-300">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-200 text-sm opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                    {category.items || "Explore Collection"}
+                  </p>
+                </div>
+              </div>
+            </div>
+            </SwiperSlide>
           ))}
         </div>
+      </Swiper>
       )}
+      
     </div>
   );
 });
