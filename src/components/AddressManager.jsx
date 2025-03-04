@@ -17,7 +17,7 @@ const AddressManager = ({ onSelectAddress, selectedAddress }) => {
       localStorage.getItem("savedAddresses") || "[]"
     );
     setSavedAddresses(addresses);
-    // Show form by default if no addresses exist
+
     if (addresses.length === 0) {
       setShowForm(true);
     }
@@ -78,6 +78,14 @@ const AddressManager = ({ onSelectAddress, selectedAddress }) => {
     );
     localStorage.setItem("savedAddresses", JSON.stringify(updatedAddresses));
     setSavedAddresses(updatedAddresses);
+  };
+
+  const handleAddressSelect = (address) => {
+    if (selectedAddress?.id === address.id) {
+      onSelectAddress(null);
+    } else {
+      onSelectAddress(address);
+    }
   };
 
   return (
@@ -220,8 +228,8 @@ const AddressManager = ({ onSelectAddress, selectedAddress }) => {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => onSelectAddress(address)}
-                    className={`px-3 py-1 text-sm rounded-lg ${
+                    onClick={() => handleAddressSelect(address)}
+                    className={`px-3 cursor-pointer py-1 text-sm rounded-lg ${
                       selectedAddress?.id === address.id
                         ? "bg-blue-600 text-white"
                         : "bg-white text-blue-600 border border-blue-600"
@@ -231,7 +239,7 @@ const AddressManager = ({ onSelectAddress, selectedAddress }) => {
                   </button>
                   <button
                     onClick={() => handleDeleteAddress(address.id)}
-                    className="px-3 py-1 text-sm text-red-600 hover:text-red-800"
+                    className="px-3 cursor-pointer py-1 text-sm text-red-600 hover:text-red-800"
                   >
                     Delete
                   </button>

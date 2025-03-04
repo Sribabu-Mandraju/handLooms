@@ -84,7 +84,13 @@ const ProductListing = () => {
               setTimeout(() => {
                 const ref = subcategoryRefs.current[matchedSubcategory];
                 if (ref) {
-                  ref.scrollIntoView({ behavior: "smooth", block: "start" });
+                  const elementPosition = ref.getBoundingClientRect().top;
+                  const offsetPosition =
+                    elementPosition + window.pageYOffset - 200;
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth",
+                  });
                 }
               }, 500);
             });
@@ -145,13 +151,6 @@ const ProductListing = () => {
         top: offsetPosition,
         behavior: "smooth",
       });
-
-      setActiveSubcategory(subCategory);
-      window.history.pushState(
-        {},
-        "",
-        `/category/${categoryId}?sub=${encodeURIComponent(subCategory)}`
-      );
     }
   };
 
@@ -191,10 +190,10 @@ const ProductListing = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 py-6">
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col mt-[40px] lg:flex-row gap-6">
         {/* Sidebar */}
         <div className="lg:w-1/4 w-full max-md:hidden">
-          <div className="bg-white border-r border-gray-300 p-4 sticky top-[200px] max-h-screen overflow-y-auto">
+          <div className="bg-white border-r border-gray-300 p-4 sticky top-0 max-h-screen overflow-y-auto">
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
               Subcategories
             </h2>

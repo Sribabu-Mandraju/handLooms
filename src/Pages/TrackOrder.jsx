@@ -43,8 +43,8 @@ const TrackOrder = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 mt-8 md:p-6">
-      <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+    <div className="max-w-4xl min-h-[65vh] flex items-center justify-center mx-auto p-4 mt-8 md:p-6">
+      <div className="bg-white w-full max-w-xl rounded-xl shadow-lg border border-gray-100 my-20 overflow-hidden">
         <div className="p-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-6">
             Track Your Order

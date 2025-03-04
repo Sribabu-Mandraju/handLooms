@@ -27,7 +27,7 @@ const App = () => {
           <ScrollToTop />
           <div className="min-h-screen bg-gray-50">
             <Navbar />
-            <main className="pt-16">
+            <main className="pt-20">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/productCard" element={<ProductCard />} />

@@ -18,7 +18,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 mb-15">
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-20 mb-15">
       <div className="flex justify-between items-center border-b pb-4 mb-4">
         <h2 className="text-2xl font-semibold text-gray-800">Your Cart</h2>
         <button

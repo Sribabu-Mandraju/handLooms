@@ -28,7 +28,6 @@ const Home = () => {
           <SubCategory />
         </div>
       </main>
-      <Footer />
     </>
   );
 };

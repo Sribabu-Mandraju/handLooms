@@ -23,7 +23,7 @@ useEffect(() => {
 const Hero = () => {
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 ">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         <div className="md:col-span-4 w-full mb-[20px] md:mb-[0px]">
           <Swiper
             navigation={true}
@@ -32,7 +32,7 @@ const Hero = () => {
             loop={true}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Navigation, Autoplay]}
-            className=" h-full object-cover  rounded-lg "
+            className="h-full object-cover rounded-none"
           >
             {swiperImg.map((item, index) => (
               <SwiperSlide
@@ -41,7 +41,7 @@ const Hero = () => {
               >
                 <img
                   src={item.image}
-                  className="w-full h-full "
+                  className="w-full h-full object-cover"
                   alt={`Slide ${index + 1}`}
                 />
               </SwiperSlide>
@@ -52,14 +52,14 @@ const Hero = () => {
         {categories.map((category, index) => (
           <div
             key={index}
-            className=" w-full h-[200px] md:h-auto overflow-hidden shadow-lg"
+            className="w-full h-[200px] md:h-auto overflow-hidden shadow-lg"
           >
             <img
               src={category.image}
               className="w-full h-full object-cover"
               alt={category.name}
             />
-            <div className=" bottom-2 left-2 text-white font-bold">
+            <div className="absolute bottom-2 left-2 text-white font-bold">
               {category.name}
             </div>
           </div>

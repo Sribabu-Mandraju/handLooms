@@ -147,7 +147,7 @@ const CartContent = ({ onNext }) => {
             </div>
 
             <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t">
-              <button className="w-full sm:w-auto text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-2 group">
+              <button className="w-full cursor-pointer sm:w-auto text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-2 group">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 transform transition-transform group-hover:-translate-x-1"
@@ -166,7 +166,7 @@ const CartContent = ({ onNext }) => {
               </button>
               <button
                 onClick={onNext}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium flex items-center justify-center gap-2"
+                className="w-full cursor-pointer sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium flex items-center justify-center gap-2"
               >
                 Proceed to Address
                 <svg
