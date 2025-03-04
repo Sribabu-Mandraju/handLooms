@@ -9,6 +9,9 @@ import ProductCard from "./components/shared/ProductCard";
 import Cart from "./Pages/cart/Cart";
 import Checkout from "./Pages/checkout/Checkout";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./Pages/NotFound";
+import TrackOrder from "./Pages/TrackOrder";
+import PaymentMethod from "./Pages/checkout/PaymentMethod";
 
 const App = () => {
   return (
@@ -21,6 +24,9 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/category/:categoryId" element={<ProductListing />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment" element={<PaymentMethod />} />
+        <Route path="/track-order" element={<TrackOrder />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

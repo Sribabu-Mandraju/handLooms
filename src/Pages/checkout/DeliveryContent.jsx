@@ -15,7 +15,7 @@ const DeliveryContent = ({
   total,
 }) => {
   const { items } = useCart();
-  const walletBalance = 104; // This should come from a user context or API
+  const walletBalance = 104;
 
   const deliveryTimes = [
     { id: "morning", label: "Morning (9:00 AM - 12:00 PM)" },
