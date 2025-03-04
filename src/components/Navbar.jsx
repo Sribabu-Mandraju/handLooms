@@ -64,7 +64,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 z-100 left-0 right-0">
+    <div className="sticky top-0 z-[100] left-0 right-0">
       <nav className="bg-white/30 backdrop-blur-3xl saturate shadow-sm relative z-50 pt-1.5">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -156,70 +156,60 @@ const Navbar = () => {
           </div>
 
          {/* Mobile Side Navbar */}
-{isMobileMenuOpen && (
-  <div className="fixed inset-0 bg-opacity-75 z-[120]">
-    <div
-      className={`fixed inset-y-0 left-0 w-64 shadow-2xl z-50 transform transition-transform duration-500 ease-in-out ${
-        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
-    >
-      <div className="p-6 h-[100vh] flex flex-col bg-black">
-        {/* Close Button Inside Mobile Menu */}
-        <div className="flex justify-end">
-          <button
-            className="text-white hover:text-gray-300 transition-colors duration-200"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X className="h-6 w-6" />
-          </button>
-        </div>
-
-        {/* Categories Section */}
-        <h2 className="text-xl font-bold text-white mb-4">Categories</h2>
-        {isLoading ? (
-          <div className="text-gray-500">Loading categories...</div>
-        ) : (
-          <div className="flex-1 overflow-y-auto">
-            {categories.map((category) => (
-              <div key={category._id} className="mb-2 border-b border-gray-700 text-white">
-                <div
-                  className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
-                  onClick={() => setActiveCategory(activeCategory === category._id ? null : category._id)}
-                >
-                  <span className="font-medium text-white hover:text-gray-300">
-                    {category.name}
-                  </span>
-                  {category.sub_categories && category.sub_categories.length > 0 && (
-                    <ChevronDown className={`ml-1 h-4 w-4 transform transition-transform ${activeCategory === category._id ? 'rotate-180' : ''}`} />
+         {isMobileMenuOpen && (
+            <div className="fixed inset-0 bg-opacity-75 z-[120] w-full">
+              <div className="fixed inset-y-0 left-0 w-64 shadow-2xl z-50 transform transition-transform duration-500 ease-in-out">
+                <div className="p-6 h-[100vh] w-full flex flex-col bg-black/80 z-[120]">
+                  <div className="flex justify-end">
+                    <button
+                      className="text-white hover:text-gray-300 transition-colors duration-200"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <X className="h-6 w-6" />
+                    </button>
+                  </div>
+                  <h2 className="text-xl font-bold text-white mb-4">Categories</h2>
+                  {isLoading ? (
+                    <div className="text-gray-500">Loading categories...</div>
+                  ) : (
+                    <div className="flex-1 overflow-y-auto">
+                      {categories.map((category) => (
+                        <div key={category._id} className="mb-2 border-b border-gray-700 text-white">
+                          <div
+                            className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
+                            onClick={() => setActiveCategory(activeCategory === category._id ? null : category._id)}
+                          >
+                            <span className="font-medium text-white hover:text-gray-300">
+                              {category.name}
+                            </span>
+                            {category.sub_categories && category.sub_categories.length > 0 && (
+                              <ChevronDown className={`ml-1 h-4 w-4 transform transition-transform ${activeCategory === category._id ? 'rotate-180' : ''}`} />
+                            )}
+                          </div>
+                          {activeCategory === category._id && category.sub_categories && (
+                            <div className="ml-4 mt-1">
+                              {category.sub_categories.map((subCategory) => (
+                                <a
+                                  key={subCategory._id}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleSubCategoryClick(category._id, subCategory.name);
+                                  }}
+                                  className="block p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors duration-200"
+                                >
+                                  {subCategory.name}
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
-                {activeCategory === category._id && category.sub_categories && (
-                  <div className="ml-4 mt-1">
-                    {category.sub_categories.map((subCategory) => (
-                      <a
-                        key={subCategory._id}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSubCategoryClick(
-                            category._id,
-                            subCategory.name
-                          );
-                        }}
-                        className="block p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors duration-200"
-                      >
-                        {subCategory.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-)}
+            </div>
+          )}
         </div>
 
        
