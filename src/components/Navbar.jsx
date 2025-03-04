@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, ShoppingBag, Heart, User, ChevronDown } from "lucide-react";
+import { Search, ShoppingBag, Heart, User, ChevronDown, Menu, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo1.png";
@@ -9,6 +9,8 @@ import Logo from "../assets/logo1.png";
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null); // Track active category for dropdown
   const cart = useCart();
   const items = cart ? cart.items : [];
   const navigate = useNavigate();
@@ -52,61 +54,32 @@ const Navbar = () => {
 
   const handleCategoryClick = (categoryId) => {
     navigate(`/category/${categoryId}`);
+    setIsMobileMenuOpen(false); // Close the mobile menu after navigation
   };
 
   const handleSubCategoryClick = (categoryId, name) => {
     const encodedName = encodeURIComponent(name);
     navigate(`/category/${categoryId}?sub=${encodedName}`);
+    setIsMobileMenuOpen(false); // Close the mobile menu after navigation
   };
 
   return (
     <div className="sticky top-0 z-100 left-0 right-0">
-      <div className="bg-red-800 py-0.5">
-        <div className="max-w-[1440px] px-4 sm:px-6 lg:px-8 mx-auto font-bold text-lg text-white font-sans">
-          <h1>Contact Centre: 086 111 8888</h1>
-        </div>
-      </div>
-
-      <nav className="bg-white shadow-sm relative z-50 pt-1.5">
+      <nav className="bg-white/30 backdrop-blur-3xl saturate shadow-sm relative z-50 pt-1.5">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link className="flex-shrink-0 cursor-pointer" to="/">
-              <img src={Logo} alt="Logo" className="h-16 mx-auto md:mx-0" />
-            </Link>
-
-            {/* Navigation Icons */}
-            <div className="flex items-center space-x-6">
-              <div className="flex-1 max-w-2xl min-w-sm mx-8 max-lg:hidden">
-                <div className="relative">
-                  <input
-                    type="text"
-                    className="w-full bg-white rounded-full pl-11 pr-4 py-2.5 focus:outline-none border border-gray-400"
-                    placeholder="Search for products..."
-                  />
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-              <Heart className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
-              <User className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
-              <div
-                className="relative cursor-pointer"
-                onClick={() => navigate("/cart")}
+            <div className="flex items-center">
+              <button
+                className="text-gray-600 hover:text-gray-900 sm:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                <ShoppingBag className="h-6 w-6 text-gray-600 hover:text-gray-900" />
-                {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItemsCount}
-                  </span>
-                )}
-              </div>
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+              <Link className="flex-shrink-0 cursor-pointer ml-4 sm:ml-0" to="/">
+                <img src={Logo} alt="Logo" className="h-16 mx-auto md:mx-0" />
+              </Link>
             </div>
-          </div>
-
-          {/* Categories Menu with Dropdowns - Using API Data */}
-        </div>
-
-        <div className="w-full bg-gray-100">
-          <div className="max-w-[1440px] mx-auto hidden sm:flex items-center mt-1 space-x-8 py-7 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-[1440px] mx-auto hidden md:flex items-center mt-1 space-x-8 py-7 px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="text-gray-500">Loading categories...</div>
             ) : (
@@ -154,7 +127,106 @@ const Navbar = () => {
               ))
             )}
           </div>
+            {/* Navigation Icons */}
+            <div className="flex items-center space-x-2 md:space-x-6">
+              <div className="flex-1 max-w-2xl min-w-sm md:mx-8 max-lg:hidden">
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="w-full bg-white rounded-full pl-11 pr-4 py-2.5 focus:outline-none border border-gray-400"
+                    placeholder="Search for products..."
+                  />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+              <Heart className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
+              <User className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
+              <div
+                className="relative cursor-pointer"
+                onClick={() => navigate("/cart")}
+              >
+                <ShoppingBag className="h-6 w-6 text-gray-600 hover:text-gray-900" />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemsCount}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+         {/* Mobile Side Navbar */}
+{isMobileMenuOpen && (
+  <div className="fixed inset-0 bg-opacity-75 z-100">
+    {/* <div className="fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-white to-gray-50 shadow-2xl z-50 transform transition-transform duration-500 ease-in"> */}
+    <div
+        className={`fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-white to-gray-50 shadow-2xl z-50 transform transition-transform duration-500 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+      <div className="p-6 h-[100vh] flex flex-col bg-white">
+        {/* Close Button Inside Mobile Menu */}
+        <div className="flex justify-end">
+          <button
+            className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <X className="h-6 w-6" />
+          </button>
         </div>
+
+        {/* Categories Section */}
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Categories</h2>
+        {isLoading ? (
+          <div className="text-gray-500">Loading categories...</div>
+        ) : (
+          <div className="flex-1 overflow-y-auto">
+            {categories.map((category) => (
+              <div key={category._id} className="mb-2">
+                <div
+                  className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
+                  onClick={() => setActiveCategory(activeCategory === category._id ? null : category._id)}
+                >
+                  <span className="font-medium text-gray-700 hover:text-gray-900 ">
+                    {category.name}
+                  </span>
+                  {category.sub_categories && category.sub_categories.length > 0 && (
+                    <ChevronDown className={`ml-1 h-4 w-4 transform transition-transform ${activeCategory === category._id ? 'rotate-180' : ''}`} />
+                  )}
+                </div>
+                {activeCategory === category._id && category.sub_categories && (
+                  <div className="ml-4 mt-1">
+                    {category.sub_categories.map((subCategory) => (
+                      <a
+                        key={subCategory._id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubCategoryClick(
+                            category._id,
+                            subCategory.name
+                          );
+                        }}
+                        className="block p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                      >
+                        {subCategory.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Icons Section */}
+        
+      </div>
+    </div>
+  </div>
+)}
+        </div>
+
+       
       </nav>
     </div>
   );
