@@ -112,7 +112,7 @@ const TrackOrder = () => {
                     >
                       <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
                         <img
-                          src={item.image}
+                          src={item.image_url}
                           alt={item.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {

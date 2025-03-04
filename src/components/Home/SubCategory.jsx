@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { useProduct } from "../../context/ProductContext";
+import { toast } from "react-toastify";
 
 const SubCategorySkeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6  px-4 sm:px-6 lg:px-8">
     {[1, 2, 3, 4].map((index) => (
       <div
         key={index}
         className="bg-white rounded-lg shadow-sm overflow-hidden animate-pulse"
       >
         <div className="h-48 bg-gray-200"></div>
-        <div className="p-4">
+        <div className="p-4 flex flex-col h-[180px]">
           <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
           <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+          <div className="h-6 bg-gray-200 rounded w-1/3 mb-auto"></div>
+          <div className="h-8 bg-gray-200 rounded w-24 mt-4"></div>
         </div>
       </div>
     ))}
@@ -26,15 +29,15 @@ const ProductCard = ({ product, onAddToCart }) => {
   const mrp = product.quantities[0]?.mrp_cost || 0;
   const discount = product.quantities[0]?.discount || 0;
   const imageUrl = product.images[0]?.image_url;
-  const [isLiked, setIsLiked] = useState(false);
+  const { isFavorite, toggleFavorite } = useProduct();
 
   const handleLikeClick = (e) => {
-    e.stopPropagation(); // Prevent triggering parent click events
-    setIsLiked(!isLiked);
+    e.stopPropagation();
+    toggleFavorite(product);
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden group">
+    <div className="bg-white rounded-lg shadow-sm overflow-hidden group flex flex-col">
       <div className="relative h-48">
         <img
           src={imageUrl || "https://via.placeholder.com/300"}
@@ -47,7 +50,9 @@ const ProductCard = ({ product, onAddToCart }) => {
         >
           <Heart
             className={`h-5 w-5 cursor-pointer transition-colors duration-200 ${
-              isLiked ? "text-red-500 fill-red-500" : "text-gray-600"
+              isFavorite(product._id)
+                ? "text-red-500 fill-red-500"
+                : "text-gray-600"
             }`}
           />
         </button>
@@ -57,12 +62,12 @@ const ProductCard = ({ product, onAddToCart }) => {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         <h3 className="text-base sm:text-lg font-semibold text-gray-900 mt-2 mb-1 line-clamp-2">
           {product.name}
         </h3>
         <p className="text-base text-gray-600 mb-2">{product.sub_category}</p>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto">
           <div className="flex flex-col">
             <span className="text-lg font-bold text-gray-900">₹{price}</span>
             {mrp > price && (
@@ -82,87 +87,15 @@ const ProductCard = ({ product, onAddToCart }) => {
 };
 
 const SubCategory = () => {
-  const [categoryProducts, setCategoryProducts] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { products, isLoading, fetchAllCategories } = useProduct();
 
   useEffect(() => {
-    const fetchCategoryItems = async (categoryId) => {
-      try {
-        const response = await fetch(
-          "https://api.meebuddy.com/app/v4/common/category-items",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              category_id: categoryId,
-            }),
-          }
-        );
-        const result = await response.json();
-        if (result.status === "success" && result.data?.items) {
-          return result.data.items.slice(0, 4);
-        }
-        return [];
-      } catch (error) {
-        console.error(
-          `Error fetching items for category ${categoryId}:`,
-          error
-        );
-        return [];
-      }
-    };
-
-    const fetchAllCategoryItems = async () => {
-      try {
-        setIsLoading(true);
-        // First, fetch all categories
-        const categoriesResponse = await fetch(
-          "https://api.meebuddy.com/app/v4/common/shop_categories",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({}),
-          }
-        );
-        const categoriesResult = await categoriesResponse.json();
-
-        if (
-          categoriesResult.status === "success" &&
-          Array.isArray(categoriesResult.data)
-        ) {
-          const categories = categoriesResult.data;
-          const productsData = {};
-
-          // Fetch items for each category
-          await Promise.all(
-            categories.map(async (category) => {
-              const items = await fetchCategoryItems(category._id);
-              if (items.length > 0) {
-                productsData[category._id] = {
-                  name: category.name,
-                  items: items,
-                };
-              }
-            })
-          );
-
-          setCategoryProducts(productsData);
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAllCategoryItems();
-  }, []);
+    if (Object.keys(products).length === 0) {
+      fetchAllCategories();
+    }
+  }, [products, fetchAllCategories]);
 
   const handleAddToCart = (product) => {
     const cartItem = {
@@ -183,24 +116,17 @@ const SubCategory = () => {
       },
     };
 
-    const productDetails = `
-Product Details:
----------------
-Name: ${cartItem.name}
-Price: ₹${cartItem.price}
-MRP: ₹${cartItem.mrp}
-Discount: ${cartItem.discount}%
-Category: ${cartItem.sub_category.name}
-    `;
-
-    const shouldAdd = window.confirm(
-      productDetails + "\n\nDo you want to add this item to cart?"
-    );
-
-    if (shouldAdd) {
-      addToCart(cartItem);
-      alert("Item added to cart successfully!");
-    }
+    addToCart(cartItem);
+    toast.success("Product added successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   if (isLoading) {
@@ -218,7 +144,7 @@ Category: ${cartItem.sub_category.name}
 
   return (
     <div className="space-y-16 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-      {Object.entries(categoryProducts).map(([categoryId, category]) => (
+      {Object.entries(products).map(([categoryId, category]) => (
         <div key={categoryId} className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-[1.5rem] mb-6 font-semibold text-gray-900">

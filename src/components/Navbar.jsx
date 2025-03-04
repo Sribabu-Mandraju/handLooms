@@ -1,8 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, ShoppingBag, Heart, User, ChevronDown } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  ShoppingBag,
+  Heart,
+  User,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { useProduct } from "../context/ProductContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo1.png";
 
@@ -12,6 +21,9 @@ const Navbar = () => {
   const cart = useCart();
   const items = cart ? cart.items : [];
   const navigate = useNavigate();
+  const { favorites } = useProduct();
+  const [favoritesCount, setFavoritesCount] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,7 +56,6 @@ const Navbar = () => {
     fetchCategories();
   }, []);
 
-  // Mock cart functionality since we're using the context
   const cartItemsCount = items.reduce(
     (sum, item) => sum + (item.quantity || 0),
     0
@@ -57,6 +68,14 @@ const Navbar = () => {
   const handleSubCategoryClick = (categoryId, name) => {
     const encodedName = encodeURIComponent(name);
     navigate(`/category/${categoryId}?sub=${encodedName}`);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -86,7 +105,9 @@ const Navbar = () => {
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
               </div>
-              <Heart className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
+              <Link to="/favorites" className="relative">
+                <Heart className="h-6 w-6 text-gray-600 hover:text-red-500 transition-colors" />
+              </Link>
               <User className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
               <div
                 className="relative cursor-pointer"

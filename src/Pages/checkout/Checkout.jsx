@@ -5,7 +5,7 @@ import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import ProgressSteps from "./ProgressSteps";
 import CartContent from "./CartContent";
-import AddressForm from "./AddressForm";
+import AddressManager from "../../components/AddressManager";
 import OrderSummary from "./OrderSummary";
 
 const Checkout = () => {
@@ -17,13 +17,7 @@ const Checkout = () => {
   const [discount, setDiscount] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [address, setAddress] = useState({
-    fullName: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    postalCode: "",
-  });
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,9 +26,8 @@ const Checkout = () => {
     }
   }, []);
 
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setAddress((prev) => ({ ...prev, [name]: value }));
+  const handleAddressSelect = (address) => {
+    setSelectedAddress(address);
   };
 
   const applyPromoCode = () => {
@@ -57,6 +50,10 @@ const Checkout = () => {
     if (step === 1) {
       setStep(2);
     } else if (step === 2) {
+      if (!selectedAddress) {
+        alert("Please select or add a shipping address");
+        return;
+      }
       setStep(3);
     }
   };
@@ -79,6 +76,11 @@ const Checkout = () => {
       return;
     }
 
+    if (!selectedAddress) {
+      alert("Please select a shipping address");
+      return;
+    }
+
     const newOrderId = generateOrderId();
     setOrderId(newOrderId);
 
@@ -89,7 +91,7 @@ const Checkout = () => {
       items: items,
       total: total + deliveryCharge - discount,
       paymentMethod: "cod",
-      address: address,
+      address: selectedAddress,
     };
 
     const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
@@ -116,12 +118,28 @@ const Checkout = () => {
         <div className="lg:col-span-2">
           {step === 1 && <CartContent onNext={handleNext} />}
           {step === 2 && (
-            <AddressForm
-              address={address}
-              onChange={handleAddressChange}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="p-6">
+                <AddressManager
+                  onSelectAddress={handleAddressSelect}
+                  selectedAddress={selectedAddress}
+                />
+                <div className="mt-6 flex justify-between">
+                  <button
+                    onClick={handleBack}
+                    className="px-6 py-2 text-gray-600 hover:text-gray-800"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Continue to Payment
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
           {step === 3 && (
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
@@ -177,7 +195,7 @@ const Checkout = () => {
                   </button>
                   <button
                     onClick={handlePlaceOrder}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     Place Order
                   </button>
@@ -248,7 +266,7 @@ const Checkout = () => {
 
       {/* Success Modal */}
       {showSuccessModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[rgba(0,0,0,0.35)] bg-opacity-10 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <div className="text-center">
               <svg
@@ -269,28 +287,45 @@ const Checkout = () => {
               </h3>
               <div className="mt-4">
                 <p className="text-sm text-gray-500">Your Order ID:</p>
-                <p className="mt-1 text-lg font-semibold text-gray-900">
-                  {orderId}
-                </p>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(orderId);
-                    const button = document.getElementById("copyButton");
-                    button.innerHTML = `
-                      <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Copied!
-                    `;
-                    setTimeout(() => {
-                      button.innerHTML = "Copy to Clipboard";
-                    }, 2000);
-                  }}
-                  id="copyButton"
-                  className="mt-2 text-sm text-blue-600 hover:text-blue-800 cursor-pointer flex items-center justify-center mx-auto"
-                >
-                  Copy to Clipboard
-                </button>
+                <div className="mt-1 flex items-center justify-center gap-2">
+                  <p className="text-lg font-semibold text-gray-900">
+                    {orderId}
+                  </p>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(orderId);
+                      const button = document.getElementById("copyButton");
+                      button.innerHTML = `
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                      `;
+                      setTimeout(() => {
+                        button.innerHTML = `
+                          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                          </svg>
+                        `;
+                      }, 2000);
+                    }}
+                    id="copyButton"
+                    className="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
             <div className="mt-6 flex justify-center gap-4">

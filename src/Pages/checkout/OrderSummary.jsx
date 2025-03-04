@@ -9,19 +9,6 @@ const OrderSummary = ({
   const { total, items = [], clearCart } = useCart();
   const finalTotal = total + deliveryCharge - discount;
 
-  const handlePlaceOrder = async () => {
-    try {
-      // Here you would typically make an API call to place the order
-      // For now, we'll just show a success message and clear the cart
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      alert("Order placed successfully!");
-      clearCart();
-      // You might want to redirect to an order confirmation page here
-    } catch (error) {
-      alert("Failed to place order. Please try again.");
-    }
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-xl ">
       <div className="p-6">
@@ -112,29 +99,6 @@ const OrderSummary = ({
             <span className="text-blue-700">₹{finalTotal.toFixed(2)}</span>
           </div>
         </div>
-
-        {step === 3 && (
-          <button
-            className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 text-white py-4 rounded-lg mt-6 transition-all duration-300 transform hover:scale-105 font-medium flex items-center justify-center gap-2 shadow-lg"
-            onClick={handlePlaceOrder}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            PLACE ORDER
-          </button>
-        )}
 
         <div className="mt-6 pt-6 border-t">
           <div className="flex flex-col gap-4">
