@@ -85,8 +85,8 @@ const Mall = () => {
           </p>
         </div>
       </div>
-
-      <div className="flex flex-col md:flex-row bg-white px-[4vw] justify-center items-center  my-4">
+ 
+      <div className="flex flex-col w-full max-w-6xl mx-auto md:flex-row rounded-md bg-white px-[4vw] justify-center items-center  my-4">
         <div className="w-full md:w-1/2 max-h-[350px] overflow-clip  ">
           <img
             src={man2}
