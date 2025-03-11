@@ -25,8 +25,8 @@ const Mall = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className=" py-8 w-full">
-        <div className="mx-auto px-4 bg-[#101828] text-center py-8 sm:px-20 flex flex-col ">
+      <div className="  w-full">
+        <div className="w-full  mt-5 max-w-6xl rounded-md mx-auto px-4 bg-[#101828] text-center py-8 sm:px-20 flex flex-col ">
           <h2 className="text-2xl font-bold mb-4 w-full text-white py-2  md:px-56 md:px-auto mx-auto ">
             Our Story: Woven by Hand, Empowered by Heart
           </h2>
