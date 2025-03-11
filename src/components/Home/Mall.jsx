@@ -1,15 +1,15 @@
 import React from "react";
-import man1 from "../assets/mallassets/vision-img.webp";
-import img1 from "../assets/mallassets/grid-1.webp";
-import img2 from "../assets/mallassets/grid-2.webp";
-import img3 from "../assets/mallassets/grid-3.webp";
-import img4 from "../assets/mallassets/grid-4.jpg";
-import img5 from "../assets/mallassets/grid-5.webp";
-import img6 from "../assets/mallassets/grid-6.webp";
-import img7 from "../assets/mallassets/grid-7.webp";
-import img8 from "../assets/mallassets/grid-8.webp";
-import man2 from "../assets/mallassets/man-2.webp";
-import Card from "./Card";
+import man1 from "../../assets/mallassets/vision-img.webp";
+import img1 from "../../assets/mallassets/grid-1.webp";
+import img2 from "../../assets/mallassets/grid-2.webp";
+import img3 from "../../assets/mallassets/grid-3.webp";
+import img4 from "../../assets/mallassets/grid-4.jpg";
+import img5 from "../../assets/mallassets/grid-5.webp";
+import img6 from "../../assets/mallassets/grid-6.webp";
+import img7 from "../../assets/mallassets/grid-7.webp";
+import img8 from "../../assets/mallassets/grid-8.webp";
+import man2 from "../../assets/mallassets/man-2.webp";
+// import Card from "./Card";
 
 const Mall = () => {
   const grid_data = [
@@ -73,15 +73,15 @@ const Mall = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 px-[4vw] gap-x-6 gap-y-10 my-10">
         {grid_data.map((item, index) => (
-        <Card item={item}/>
+          <Card item={item} />
         ))}
-        
       </div>
 
       <div className="px-[4vw] rounded-xl">
         <div className="bg-[#101828] text-center w-full text-white py-4  rounded-xl">
           <p className="font-medium px-4 py-2 sm:px-20 py-2 max-w-4xl mx-auto">
-          Pure Cotton Christmas Bed Sheets from Project India - the Mori Villages. Endorsed by Usha Training cum Production Center.
+            Pure Cotton Christmas Bed Sheets from Project India - the Mori
+            Villages. Endorsed by Usha Training cum Production Center.
           </p>
         </div>
       </div>
@@ -95,19 +95,25 @@ const Mall = () => {
           />
         </div>
         <div className="flex flex-col w-full md:w-1/2 text-left p-6 md:p-10 md:pl-16">
-          
           <p className="text-gray-700 leading-relaxed font-medium">
-          Celebrate this festive season with our beautifully crafted Pure Cotton Christmas Bed Sheets, handwoven by skilled artisans from the Mori villages, empowering women through Usha Training cum Production Center.
+            Celebrate this festive season with our beautifully crafted Pure
+            Cotton Christmas Bed Sheets, handwoven by skilled artisans from the
+            Mori villages, empowering women through Usha Training cum Production
+            Center.
           </p>
           <p className="text-gray-700 leading-relaxed font-medium">
-          By purchasing these bed sheets, you’re not just getting a product; you’re directly supporting the livelihoods of women artisans in rural India. Every bed sheet sold helps empower women through skill-building and sustainable livelihood opportunities
+            By purchasing these bed sheets, you’re not just getting a product;
+            you’re directly supporting the livelihoods of women artisans in
+            rural India. Every bed sheet sold helps empower women through
+            skill-building and sustainable livelihood opportunities
           </p>
         </div>
       </div>
       <div className="px-[4vw] rounded-xl">
         <div className="bg-[#101828] text-center w-full text-white py-4  rounded-xl">
           <p className="font-medium px-4 sm:px-20 py-2 max-w-4xl mx-auto">
-          This Christmas, gift more than just beautiful linens—gift hope, empowerment, and a brighter future for rural women.
+            This Christmas, gift more than just beautiful linens—gift hope,
+            empowerment, and a brighter future for rural women.
           </p>
         </div>
       </div>
@@ -116,3 +122,12 @@ const Mall = () => {
 };
 
 export default Mall;
+
+const Card = ({ item }) => {
+  return (
+    <div className="flex flex-col gap-y-10 font-semibold text-xl ">
+      <img src={item.image} className="rounded-t-lg w-full h-[300px] " />
+      <p className="text-center text-gray-900">{item.name}</p>
+    </div>
+  );
+};

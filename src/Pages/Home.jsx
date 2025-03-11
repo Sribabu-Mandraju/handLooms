@@ -3,6 +3,8 @@ import Footer from "../components/Footer";
 import Category from "../components/Home/Category";
 import SubCategory from "../components/Home/SubCategory";
 import Hero from "../components/Home/Hero";
+import Bed from "../components/Home/Bed";
+import Mall from "../components/Home/Mall";
 
 const Home = () => {
   const categoryRef = useRef(null);
@@ -26,6 +28,8 @@ const Home = () => {
         <div className="w-full max-w-[1440px] mx-auto pb-10 px-8 max-md:px-4 max-sm:px-2">
           <Category ref={categoryRef} />
           <SubCategory />
+          <Bed />
+          <Mall />
         </div>
       </main>
     </>
